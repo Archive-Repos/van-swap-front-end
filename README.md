@@ -1,4 +1,4 @@
-# M3 - `README.md` Example
+# Van Swap
 
 <br>
 
@@ -8,34 +8,34 @@
 
 ## Description
 
-This is an app to manage unofficial tournaments within communities. The app helps to organize, manage and track competitions.
+This is an app to match camper van owners with each other to swap vans so that they can holiday for free in places they cannot drive to.
 
 ## User Stories
 
 -  **404:** As an anon/user I can see a 404 page if I try to reach a page that does not exist so that I know it's my fault
--  **Signup:** As an anon I can sign up in the platform so that I can start playing into competition
--  **Login:** As a user I can login to the platform so that I can play competitions
+-  **About** As a user I can read information about ther van swap app and how it works
+-  **FAQ** As a user I can read frequently asked questions about the app
+-  **Contact** As a user I can send an email to the app owners if I cannot find an anwer to my question
+-  **Signup:** As an anon I can sign up in the platform so that I can start searching for vans and advertising my own van for swaps
+-  **Login:** As a user I can login to the platform so that I can search for vans and receive swap proposals
 -  **Logout:** As a user I can logout from the platform so no one else can use it
--  **Add Tournaments** As a user I can add a tournament
--  **Edit Tournaments** As a user I can edit a tournament
--  **Add Player Names** As a user I can add players to a tournament
--  **Edit Player profiles** As a user I can edit a player profile to fit into the tournament view
--  **View Tournament Table** As a user I want to see the tournament table
--  **Edit Games** As a user I can edit the games, so I can add scores
--  **View Ranks** As a user I can see the ranks
-
-
-
+-  **Add User Profile** As a user I can add a user profile
+-  **Edit/Delete User Profile** As a user I can edit or delete my user profile
+-  **Add Van Profile** As a user I can add my van profile to advertise it for swaps
+-  **Edit/Delete Van Profile** As a user I can edit or delete my van profile 
+-  **View Vans** As a user I want to see the list of vans available for swaps
+-  **Search Vans** As a user I can filter the list of vans available for swaps by location
+-  **Van Details** As a user I can view complete details of a particular van and its owner
+-  **Swap Request** As a user I can complete a swap request for a particular van and send this to another user for approval
+-  **View Swap Requests** As a user I can see swap requests and either accept or decline them
 
 ## Backlog
 
 User profile:
-- see my profile
-- change tournament mode to FFA
-- Add weather widget
-- lottie interactions
-- users can bet
-- add geolocation to events when creating
+- add user/van reviews
+- add Map API for alterntaive van search method
+- allow users to write blog posts about their travels
+- allow users to chat/send messages directly to one another
 
 
 <br>
@@ -46,13 +46,13 @@ User profile:
 ## React Router Routes (React App)
 | Path                      | Component            | Permissions                 | Behavior                                                     |
 | ------------------------- | -------------------- | --------------------------- | ------------------------------------------------------------ |
-| `/`                       | SplashPage           | public `<Route>`            | Home page                                                    |
-| `/signup`                 | SignupPage           | anon only  `<AnonRoute>`    | Signup form, link to login, navigate to homepage after signup |
+| `/`                       | SplashPage           | public `<Route>`            | Splash page                                                  |
+| `/signup`                 | SignupPage           | anon only  `<AnonRoute>`    | Signup form, link to login, navigate to homepage after signup|
 | `/login`                  | LoginPage            | anon only `<AnonRoute>`     | Login form, link to signup, navigate to homepage after login |
-| `/tournaments`            | TournamentListPage   | user only `<PrivateRoute>`  | Shows all tournaments in a list                              |
-| `/tournaments/add`        | TournamentListPage   | user only `<PrivateRoute>`  | Edits a tournament                                           |
-| `/tournaments/:id`        | TournamentDetailPage | user only `<PrivateRoute>`  | Details of a tournament to edit                              |
-| `/tournament/:id`         | n/a                  | user only `<PrivateRoute>`  | Delete tournament                                            |
+| `/home       `            | UserProfilePage      | user only `<PrivateRoute>`  | Shows user profile and any van swap requests                 |
+| `/home/:id/edit  `        | EditProfilePage      | user only `<PrivateRoute>`  | Edits a user profile                                         |
+| `/home/:id/delete`        | DeleteProfilePage      user only `<PrivateRoute>`  | Deletes a user profile                              |
+| `/van/:id`                | n/a                  | user only `<PrivateRoute>`  | Delete tournament                                            |
 | `/tournament/players`     | PlayersListPage      | user only  `<PrivateRoute>` | List of players of a tournament                              |
 | `/tournament/players/add` | PlayersListPage      | user only `<PrivateRoute>`  | Add a player to the tournament                               |
 | `/tournament/players/:id` | PlayersDetailPage    | user only `<PrivateRoute>`  | Edit player for tournament                                   |
