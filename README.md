@@ -33,6 +33,7 @@ This is an app to match camper van owners with each other to swap vans so that t
 
 User profile:
 - add user/van reviews
+- add more filter options when searching vans e.g. make and model, type or date
 - add Map API for alterntaive van search method
 - allow users to write blog posts about their travels
 - allow users to chat/send messages directly to one another
@@ -47,51 +48,66 @@ User profile:
 | Path                      | Component            | Permissions                 | Behavior                                                     |
 | ------------------------- | -------------------- | --------------------------- | ------------------------------------------------------------ |
 | `/`                       | SplashPage           | public `<Route>`            | Splash page                                                  |
+| `/about`                  | AboutPage            | public `<Route>`            | Shows further information about app and hot it works         |
+| `/about/faq`              | FAQPage              | public `<Route>`            | Shows FAQs about the site                                    |
+| `/error`                  | ErrorPage            | public `<Route>`            | Shows error message                                          |
 | `/signup`                 | SignupPage           | anon only  `<AnonRoute>`    | Signup form, link to login, navigate to homepage after signup|
-| `/login`                  | LoginPage            | anon only `<AnonRoute>`     | Login form, link to signup, navigate to homepage after login |
-| `/home       `            | UserProfilePage      | user only `<PrivateRoute>`  | Shows user profile and any van swap requests                 |
+| `/login`                  | LoginPage            | anon only `<AnonRoute>`     | Login form, navigate to homepage after login                 |
+| `/home`                   | UserProfilePage      | user only `<PrivateRoute>`  | Shows user profile and any van swap requests                 |
+| `/home/:id/add`           | AddProfilePage       | user only `<PrivateRoute>`  | Adds a user profile for new users                            |
 | `/home/:id/edit  `        | EditProfilePage      | user only `<PrivateRoute>`  | Edits a user profile                                         |
-| `/home/:id/delete`        | DeleteProfilePage      user only `<PrivateRoute>`  | Deletes a user profile                              |
-| `/van/:id`                | n/a                  | user only `<PrivateRoute>`  | Delete tournament                                            |
-| `/tournament/players`     | PlayersListPage      | user only  `<PrivateRoute>` | List of players of a tournament                              |
-| `/tournament/players/add` | PlayersListPage      | user only `<PrivateRoute>`  | Add a player to the tournament                               |
-| `/tournament/players/:id` | PlayersDetailPage    | user only `<PrivateRoute>`  | Edit player for tournament                                   |
-| `/tournament/players/:id` | PlayersListPage      | user only  `<PrivateRoute>` | Delete player from tournament                                |
-| `/tournament/tableview`   | TableView            | user only  `<PrivateRoute>` | Games view and brackets                                      |
-| `/tournament/ranks`       | RanksPage            | user only `<PrivateRoute>`  | Ranks list                                                   |
-| `/tournament/game`        | GameDetailPage       | user only `<PrivateRoute>`  | Game details                                                 |
-
-
+| `/home/:id/delete`        | DeleteProfilePage    | user only `<PrivateRoute>`  | Deletes a user profile                                       |
+| `/van/:id`                | VanProfilePage       | user only `<PrivateRoute>`  | Shows van profile                                            |
+| `/van/:id/add`            | AddVanProfilePage    | user only `<PrivateRoute>`  | Adds a van profile                                           |
+| `/van/:id/edit`           | EditVanProfilePage   | user only  `<PrivateRoute>` | Edits a van profile                                          |
+| `/van/:id/delete`         | DeleteVanProfilePage | user only `<PrivateRoute>`  | Deletes a van profile                                        |
+| `/allvans`                | AllVansPage          | user only `<PrivateRoute>`  | Shows all vans available for swaps                           |
+| `/allvans?location`       | FilteredVansPage     | user only  `<PrivateRoute>` | Shows vans filtered by location                              |
+| `/vandetails/:id`         | VanDetailsPage       | user only  `<PrivateRoute>` | Shows full details of one particular van                     |
+| `/vanswaprequest/:id`     | SwapRequestPage      | user only `<PrivateRoute>`  | Allows use to accept or decline request swap request         |
 
 
 ## Components
 
-- LoginPage
-
 - SplashPage
 
-- TournamentListPage
+- AboutPage
 
-- Tournament Cell
+- FAQPage
 
-- TournamentDetailPage
+- ErrorPage
 
-- TableViewPage
+- LoginPage
 
-- PlayersListPage
+- SignupPage
 
-- PlayerDetailPage
+- UserProfilePage
 
-- RanksPage
+- AddProfilePage
 
-- TournamentDetailPageOutput
+- EditProfilePgae
+
+- DeleteProfilePage
+
+- VanProfilePage
+
+- AddVanProfilePage
+
+- EditVanProfilePage
+
+- DeleteVanProfilePage
+
+- AllVansPage
+
+- FilteredVansPage
+
+- VanDetailsPage
+
+- SwapRequestPage
 
 - Navbar
 
-
-  
-
- 
+- Footer
 
 ## Services
 
@@ -101,113 +117,22 @@ User profile:
   - auth.logout()
   - auth.me()
   - auth.getUser() // synchronous
-- Tournament Service
-  - tournament.list()
-  - tournament.detail(id)
-  - tournament.add(id)
-  - tournament.delete(id)
-  
-- Player Service 
-
-  - player.detail(id)
-  - player.add(id)
-  - player.delete(id)
-
-- Game Service
-
-  - Game.put(id)
-
-
-
+- Van Service
+  - van.list()
+  - van.filter()
+  - van.detail(id)
+  - van.add(id)
+  - van.delete(id)
+  - van.edit(id)
+- User Service 
+  - user.detail(id)
+  - user.add(id)
+  - user.delete(id)
+  - user.edit(id)
+- Swap Service
+  - Swap.put(id)
+  - Swap.edit(id)
 <br>
-
-
-# Server / Backend
-
-
-## Models
-
-User model
-
-```javascript
-{
-  username: {type: String, required: true, unique: true},
-  email: {type: String, required: true, unique: true},
-  password: {type: String, required: true},
-  favorites: [Tournament]
-}
-```
-
-
-
-Tournament model
-
-```javascript
- {
-   name: {type: String, required: true},
-   img: {type: String},
-   players: [{type: Schema.Types.ObjectId,ref:'Participant'}],
-   games: [{type: Schema.Types.ObjectId,ref:'Game'}]
- }
-```
-
-
-
-Player model
-
-```javascript
-{
-  name: {type: String, required: true},
-  img: {type: String},
-  score: []
-}
-```
-
-
-
-Game model
-
-```javascript
-{
-  player1: [{type: Schema.Types.ObjectId,ref:'Participant'}],
-  player2: [{type: Schema.Types.ObjectId,ref:'Player'}],
-  player2: [{type: Schema.Types.ObjectId,ref:'Player'}],
-  winner: {type: String},
-  img: {type: String}
-}
-```
-
-
-<br>
-
-
-## API Endpoints (backend routes)
-
-| HTTP Method | URL                         | Request Body                 | Success status | Error Status | Description                                                  |
-| ----------- | --------------------------- | ---------------------------- | -------------- | ------------ | ------------------------------------------------------------ |
-| GET         | `/auth/profile    `           | Saved session                | 200            | 404          | Check if user is logged in and return profile page           |
-| POST        | `/auth/signup`                | {name, email, password}      | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
-| POST        | `/auth/login`                 | {username, password}         | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session |
-| POST        | `/auth/logout`                | (empty)                      | 204            | 400          | Logs out the user                                            |
-| GET         | `/tournaments`                |                              |                | 400          | Show all tournaments                                         |
-| GET         | `/tournaments/:id`            | {id}                         |                |              | Show specific tournament                                     |
-| POST        | `/tournaments/add-tournament` | {}                           | 201            | 400          | Create and save a new tournament                             |
-| PUT         | `/tournaments/edit/:id`       | {name,img,players}           | 200            | 400          | edit tournament                                              |
-| DELETE      | `/tournaments/delete/:id`     | {id}                         | 201            | 400          | delete tournament                                            |
-| GET         | `/players`                    |                              |                | 400          | show players                                                 |
-| GET         | `/players/:id`                | {id}                         |                |              | show specific player                                         |
-| POST        | `/players/add-player`         | {name,img,tournamentId}      | 200            | 404          | add player                                                   |
-| PUT         | `/players/edit/:id`           | {name,img}                   | 201            | 400          | edit player                                                  |
-| DELETE      | `/players/delete/:id`         | {id}                         | 200            | 400          | delete player                                                |
-| GET         | `/games`                      | {}                           | 201            | 400          | show games                                                   |
-| GET         | `/games/:id`                  | {id,tournamentId}            |                |              | show specific game                                           |
-| POST        | `/games/add-game`             | {player1,player2,winner,img} |                |              | add game                                                     |
-| POST        | `/games/add-all-games`        |                              |                |              | add all games from a tournament. Gets a list of players and populates them via algorithm. |
-| PUT         | `/games/edit/:id`             | {winner,score}               |                |              | edit game                                                    |
-
-
-<br>
-
 
 ## Links
 
