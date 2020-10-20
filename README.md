@@ -1,8 +1,4 @@
-# Van Swap
-
-<br>
-
-# Quick Compo
+# Van Swap - get off the beaten track
 
 <br>
 
